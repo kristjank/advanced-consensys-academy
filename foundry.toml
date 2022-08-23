@@ -2,5 +2,10 @@
 src = 'src'
 out = 'out'
 libs = ['lib']
+gas_limit = 9223372036854775807
+gas_price = 0
+gas_reports = ['*']
+optimizer = true
+optimizer_runs = 888888
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
