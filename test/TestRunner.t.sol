@@ -16,6 +16,9 @@ import "../src/Day_1/Library_V1.sol";
 import "../src/Day_1/Inherit_V0.sol";
 import "../src/Day_1/Inherit_V1.sol";
 
+import "../src/Day_1/SaveGas_V0.sol";
+import "../src/Day_1/SaveGas_V1.sol";
+
 import {TestHelpers} from "./TestHelpers.sol";
 
 contract Day_1_Test is Test, TestHelpers {
@@ -31,7 +34,8 @@ contract Day_1_Test is Test, TestHelpers {
     Library_V1 public libV1;
     Inherit_V0 public inheritV0;
     Inherit_V1 public inheritV1;
-
+    SaveGas_V0 public saveGasV0;
+    SaveGas_V1 public saveGasV1;
 
 
     function setUp() public override {
@@ -54,6 +58,9 @@ contract Day_1_Test is Test, TestHelpers {
 
         inheritV0 = new Inherit_V0();
         inheritV1 = new Inherit_V1();
+
+        saveGasV0 = new SaveGas_V0();
+        saveGasV1 = new SaveGas_V1();
     }
 
     // testing Arrays_And_Mappings
@@ -104,5 +111,11 @@ contract Day_1_Test is Test, TestHelpers {
     function testInheritUsage() public {
         inheritV0.work(100);
         inheritV1.work(100);
+    }
+
+    // testing saveGas
+    function testMemoryAccess() public {
+        saveGasV0.getSum();
+        saveGasV1.getSum();
     }
 }
