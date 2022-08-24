@@ -5,12 +5,14 @@ contract SaveGas_V0 {
     uint256[] myArray = [1, 2, 3, 4, 5, 6, 7];
 
     function getSum() external view returns (uint256) {
+        uint256[] memory test = myArray;
         uint256 sum;
-        for (uint256 i = 0; i < myArray.length; i++) {
-            sum += myArray[i];
+        for (uint256 i = 0; i < test.length; i++) {
+            sum += test[i];
         }
         return sum;
     }
+
 }
 
 /*
