@@ -2,11 +2,41 @@
 pragma solidity 0.8.16;
 
 contract QuizFactory {
-    function createQuiz() public {}
+    address[] quizzes;
+
+    function createQuiz(string calldata _question, bytes32 _sealedAnswer)
+        public
+        returns (address)
+    {
+        address quiz = address(new Quiz(msg.sender, _question, _sealedAnswer));
+        quizzes.push(quiz);
+
+        return quiz;
+    }
+
+    function getCount() public view returns (uint256 count) {
+        return quizzes.length;
+    }
+
+    function getQuiz(uint256 index) public view returns (address) {
+        return quizzes[index];
+    }
 }
 
 contract Quiz {
-    constructor() {}
+    address owner;
+    string question;
+    bytes32 public sealedAnswer;
+
+    constructor(
+        address _owner,
+        string memory _question,
+        bytes32 _sealedAnswer
+    ) {
+        owner = _owner;
+        question = _question;
+        sealedAnswer = _sealedAnswer;
+    }
 
     modifier onlyOwner() {
         _;

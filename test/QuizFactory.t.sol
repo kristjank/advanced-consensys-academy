@@ -12,9 +12,12 @@ contract QuizFactoryTest is Test, TestHelpers {
 
     function setUp() public override {
         TestHelpers.setUp();
+        quizFactory = new QuizFactory();
     }
 
-    function testOne() public {
-        //assertEq(true, true);
+    function testCreateQuiz() public {
+        address quizAddress = quizFactory.createQuiz("question", "answer");
+        assertEq(quizFactory.getCount(), 1);
+        assertEq(quizFactory.getQuiz(0), quizAddress);
     }
 }
