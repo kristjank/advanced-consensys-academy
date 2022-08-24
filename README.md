@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- install foundry
+- Install foundry https://book.getfoundry.sh/getting-started/installation
 
 ## Usage / Helpers
 
