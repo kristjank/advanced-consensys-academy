@@ -37,7 +37,6 @@ contract Day_1_Test is Test, TestHelpers {
     SaveGas_V0 public saveGasV0;
     SaveGas_V1 public saveGasV1;
 
-
     function setUp() public override {
         TestHelpers.setUp();
 
