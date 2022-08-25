@@ -60,8 +60,9 @@ contract Quiz {
     // TODO: add modifiers
     function commitGuess(bytes32 _sealedGuess, string memory _saltGuess)
         public
+        payable
     {
-        //        require(msg.value >= 1 ether, "Insufficient funds");
+        require(msg.value >= 1 ether, "Insufficient funds");
 
         Guess memory guess;
         guess.owner = msg.sender;
@@ -71,9 +72,9 @@ contract Quiz {
         guessess[msg.sender] = guess;
         guessessCount++;
 
-        //      if (msg.value > 1 ether) {
-        //        payable(msg.sender).transfer(msg.value - 1 ether);
-        //  }
+        if (msg.value > 1 ether) {
+            payable(msg.sender).transfer(msg.value - 1 ether);
+        }
     }
 
     function getGuessesCount() public view returns (uint256) {

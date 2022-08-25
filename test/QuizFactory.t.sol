@@ -14,10 +14,12 @@ contract QuizFactoryTest is Test, TestHelpers {
 
     function setUp() public override {
         TestHelpers.setUp();
+        vm.startPrank(alice);
+        quizFactory = new QuizFactory();
+        vm.stopPrank();
     }
 
     function testQuizCreate() public {
-        quizFactory = new QuizFactory();
         bytes32 quizSealedAnswer = keccak256(bytes("answer"));
         address quizAddress = quizFactory.createQuiz(
             "question",
@@ -30,8 +32,6 @@ contract QuizFactoryTest is Test, TestHelpers {
     }
 
     function testQuizCommitGuess() public {
-        vm.startPrank(alice);
-        quizFactory = new QuizFactory();
         bytes32 quizSealedAnswer = keccak256(bytes("answer"));
         address quizAddress = quizFactory.createQuiz(
             "question",
@@ -48,18 +48,9 @@ contract QuizFactoryTest is Test, TestHelpers {
             "salt123alice"
         );
 
-        helperCommitGuess(quizAddress, bob, falseSealedAnswer, "salt123bob");
-        helperCommitGuess(quizAddress, rik, correctSealedAnswer, "salt123rik");
-        helperCommitGuess(
-            quizAddress,
-            morty,
-            falseSealedAnswer,
-            "salt123morty"
-        );
-
         uint256 guessCount = Quiz(quizAddress).getGuessesCount();
 
-        assertEq(guessCount, 4);
+        assertEq(guessCount, 1);
         vm.stopPrank();
     }
 
@@ -69,11 +60,11 @@ contract QuizFactoryTest is Test, TestHelpers {
         bytes32 sealedGuess,
         string memory saltGuess
     ) private {
-        //vm.startPrank(sender);
-        //Quiz(quizAddress).commitGuess(sealedGuess, saltGuess){value: 100 ether};
-        Quiz(quizAddress).commitGuess(sealedGuess, saltGuess);
+        vm.startPrank(sender);
 
-        //vm.stopPrank();
+        Quiz(quizAddress).commitGuess{value: 2 ether}(sealedGuess, saltGuess);
+
+        vm.stopPrank();
     }
 
     function helperCommitGuessCall(
