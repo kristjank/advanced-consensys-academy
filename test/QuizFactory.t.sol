@@ -54,8 +54,9 @@ contract QuizFactoryTest is Test, TestHelpers {
             "salt123alice"
         );
 
-        // TODO: error - if I vote with different sender - why
-        // fun test with: forge test -vvvvv --match-test testQuizCommit
+        // TODO: error - if I vote with different sender than quizFactory creator (ALICE) - why
+        // uncomment to see...
+        // run test with: forge test -vvvvv --match-test testQuizCommit
         // helperCommitGuess(
         //     quizAddress,
         //     bob,
