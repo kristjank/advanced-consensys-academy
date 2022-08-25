@@ -1,8 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.16;
 
+import "./Quiz.sol";
+
 contract QuizFactory {
-    address[] quizzes;
+    address[] public quizzes;
+    mapping(bytes32 => uint256) quizIds;
 
     function createQuiz(string calldata _question, bytes32 _sealedAnswer)
         public
@@ -10,51 +13,20 @@ contract QuizFactory {
     {
         address quiz = address(new Quiz(msg.sender, _question, _sealedAnswer));
         quizzes.push(quiz);
+        quizIds[_sealedAnswer] = quizzes.length - 1;
 
         return quiz;
     }
 
-    function getCount() public view returns (uint256 count) {
+    function getQuizCount() public view returns (uint256 count) {
         return quizzes.length;
     }
 
-    function getQuiz(uint256 index) public view returns (address) {
+    function getQuizByIndex(uint256 index) public view returns (address) {
         return quizzes[index];
     }
-}
 
-contract Quiz {
-    address owner;
-    string question;
-    bytes32 public sealedAnswer;
-
-    constructor(
-        address _owner,
-        string memory _question,
-        bytes32 _sealedAnswer
-    ) {
-        owner = _owner;
-        question = _question;
-        sealedAnswer = _sealedAnswer;
+    function getQuizById(bytes32 _sealedAnswer) public view returns (address) {
+        return quizzes[quizIds[_sealedAnswer]];
     }
-
-    modifier onlyOwner() {
-        _;
-    }
-
-    modifier onlyPeriod(uint256 fromDays, uint256 toDays) {
-        _;
-    }
-
-    function compareStrings() public {}
-
-    function commitGuess() public {}
-
-    function revealAnswer() public {}
-
-    function revealGuess() public {}
-
-    function withdrawPrize() public {}
-
-    function destroyQuiz() public {}
 }
