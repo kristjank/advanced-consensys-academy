@@ -13,10 +13,10 @@ contract Quiz {
 
     address owner;
     string question;
-    bytes32 public sealedAnswer;
+    bytes32 sealedAnswer;
     uint256 creationTimestamp = block.timestamp;
 
-    mapping(address => Guess) public guessess;
+    mapping(address => Guess) guessess;
     uint256 guessessCount;
 
     constructor(
@@ -28,6 +28,9 @@ contract Quiz {
         question = _question;
         sealedAnswer = _sealedAnswer;
     }
+
+    event Received(address, uint256);
+    event Refund(address, uint256);
 
     modifier onlyOwner() {
         require(msg.sender == owner);
@@ -59,21 +62,22 @@ contract Quiz {
 
     // TODO: add modifiers
     function commitGuess(bytes32 _sealedGuess, string memory _saltGuess)
-        public
+        external
         payable
     {
         require(msg.value >= 1 ether, "Insufficient funds");
+        emit Received(msg.sender, msg.value);
 
         Guess memory guess;
         guess.owner = msg.sender;
         guess.sealedGuess = _sealedGuess;
         guess.saltGuess = _saltGuess;
-
         guessess[msg.sender] = guess;
         guessessCount++;
 
         if (msg.value > 1 ether) {
             payable(msg.sender).transfer(msg.value - 1 ether);
+            emit Refund(msg.sender, msg.value - 1 ether);
         }
     }
 
